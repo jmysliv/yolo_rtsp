@@ -1,10 +1,10 @@
 import threading
-import time
+from datetime import datetime
 
 import cv2
 
 from .frames_manager import FramesManager
-from ..logger import logger
+from ..utils.logger import logger
 
 
 class RtspReader:
@@ -15,10 +15,12 @@ class RtspReader:
         self._frames_manager = frames_manager
         self._capture_thread = None
         self._running = True
+        self.number_of_frames = 0
         self.initialize_capture()
 
     def initialize_capture(self):
         self._capture = cv2.VideoCapture(self._rtsp_url)
+        # self.run_capture()
         self._capture_thread = threading.Thread(target=self.run_capture, args=())
         self._capture_thread.start()
 
@@ -33,7 +35,11 @@ class RtspReader:
             self._frames_manager.handle_frame(frame)
 
             if ret:
-                time.sleep(self._frame_rate_timeout)
+                self.number_of_frames += 1
+                t = datetime.now()
+                cv2.imwrite(f'./outputs/frame_${t}.jpg', frame)
+                # cv2.imshow('frame', frame)
+                # time.sleep(self._frame_rate_timeout)
             else:
                 self._capture.release()
                 logger.warning("Failed to read frames")

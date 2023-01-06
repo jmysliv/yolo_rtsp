@@ -9,8 +9,9 @@ from .status import Request, Status, Response, Keep, Ditch, New
 from .types import Config, FrameStrategy, MqttInfo
 from ..frames.frames_manager import FramesManager
 from ..frames.rtsp_reader import RtspReader
-from ..logger import logger
-
+from ..utils.logger import logger
+from ..utils.metric_collector import MetricCollector
+from ..utils.mqtt import MqttManager
 
 def conf_from_obj(conf) -> Config:
     info = conf['mqtt_info']
@@ -46,7 +47,6 @@ class ConfigManager:
         self._rtsp_reader = None
         self._mqtt_info = None
         self._rtsp_url = None
-        self._frame_rate = None
         self.start_pooling_for_config_reload()
 
     def start_pooling_for_config_reload(self):
@@ -81,5 +81,8 @@ class ConfigManager:
         if self._frames_manager:
             self._frames_manager.stop()
         self._has_config = True
-        self._frames_manager = FramesManager(config.frame_strategy, config.mqtt_info)
+        mqtt_manager = MqttManager(config.mqtt_info)
+        self._frames_manager = FramesManager(config.frame_strategy, mqtt_manager)
         self._rtsp_reader = RtspReader(config.frame_rate_timeout, config.rtsp_url, self._frames_manager)
+        metric_collector = MetricCollector(self._rtsp_reader)
+        metric_collector.start_collecting_metrics()
