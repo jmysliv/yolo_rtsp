@@ -1,10 +1,12 @@
 import psutil
 from datetime import datetime
 import time
-
+from ..frames.rtsp_reader import RtspReader
+from .mqtt import MqttManager
 class MetricCollector:
-    def __init__(self, rtsp_reader):
+    def __init__(self, rtsp_reader: RtspReader, mqtt_manager: MqttManager):
         self.rtsp_reader = rtsp_reader
+        self.mqtt_manager = mqtt_manager
         self.timestamp = datetime.now()
         self.cpu_usage = None
         self.memory_usage = None
@@ -22,8 +24,12 @@ class MetricCollector:
             self.number_of_frames = self.rtsp_reader.number_of_frames
             self.timestamp =  current_time
 
-            print('The CPU usage is: ', self.cpu_usage )
-            print('RAM memory % used:', self.ram_usage)
-            print('frames:', self.frames_per_second)
+            stats = {
+                "cpu": self.cpu_usage,
+                "ram": self.ram_usage,
+                "frames": self.frames_per_second
+            }
+
+            self.mqtt_manager.publish_message(stats)
 
             time.sleep(5)

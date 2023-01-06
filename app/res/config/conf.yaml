@@ -1,12 +1,11 @@
 ---
-streams:
-  - frame_rate_timeout: 1
-    rtsp_url: rtsp://admin:L279ED32@172.20.10.9:554/cam/realmonitor?channel=1&subtype=0
-    frame_strategy: DROP
-    mqtt_info:
-      client_id: id-1000
-      username: admin
-      password: admin
-      broker: localhost
-      port: 1883
-      topic: yolo
+frame_rate_timeout: 1
+rtsp_url: rtsp://admin:L279ED32@172.20.10.9:554/cam/realmonitor?channel=1&subtype=0
+frame_strategy: DROP
+mqtt_info:
+  client_id: id-1000
+  username: admin
+  password: admin
+  broker: localhost
+  port: 1883
+  topic: yolo

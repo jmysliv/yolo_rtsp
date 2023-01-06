@@ -1,6 +1,6 @@
 import threading
 from datetime import datetime
-from ..config.types import FrameStrategy
+from ..utils.types import FrameStrategy
 from .frame import FrameInfo
 from .yolo import Yolo
 from ..utils.logger import logger

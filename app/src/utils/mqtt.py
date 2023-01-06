@@ -1,6 +1,6 @@
 import json
 from paho.mqtt import client as mqtt_client
-from ..config.types import  MqttInfo
+from ..utils.types import  MqttInfo
 from ..utils.logger import logger
 import threading
 
@@ -33,13 +33,13 @@ class MqttManager:
             else:
                 logger.warning("Failed to connect to MQTT broker, return code %d\n", rc)
         
-        def on_message(client, userdata, msg):
-            print(msg.topic+" "+str(msg.payload))
+        # def on_message(client, userdata, msg):
+        #     print(msg.topic+" "+str(msg.payload))
         try:
             client = mqtt_client.Client(self._mqtt_info.client_id)
             client.username_pw_set(self._mqtt_info.username, self._mqtt_info.password)
             client.on_connect = on_connect
-            client.on_message = on_message
+            # client.on_message = on_message
             client.connect(self._mqtt_info.broker, self._mqtt_info.port)
             return client
         except Exception as e:
@@ -50,7 +50,6 @@ class MqttManager:
         msg = json.dumps(obj, default=str)
         if self._mqtt_client:
             result = self._mqtt_client.publish(self._mqtt_info.topic, msg)
-            print(result)
             status = result[0]
             if status == 0:
                 logger.info(f"Send message to MQTT topic")
