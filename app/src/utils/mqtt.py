@@ -33,8 +33,6 @@ class MqttManager:
             else:
                 logger.warning("Failed to connect to MQTT broker, return code %d\n", rc)
         
-        # def on_message(client, userdata, msg):
-        #     print(msg.topic+" "+str(msg.payload))
         try:
             client = mqtt_client.Client(self._mqtt_info.client_id)
             client.username_pw_set(self._mqtt_info.username, self._mqtt_info.password)
@@ -46,10 +44,10 @@ class MqttManager:
             print(e)
             return None
 
-    def publish_message(self, obj):
+    def publish_message(self, obj, topic):
         msg = json.dumps(obj, default=str)
         if self._mqtt_client:
-            result = self._mqtt_client.publish(self._mqtt_info.topic, msg)
+            result = self._mqtt_client.publish(topic, msg)
             status = result[0]
             if status == 0:
                 logger.info(f"Send message to MQTT topic")

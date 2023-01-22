@@ -10,7 +10,7 @@ def load_and_parse_config() -> Config:
     info = conf['mqtt_info']
     mqtt_info = MqttInfo(
         client_id=info['client_id'], username=info['username'], password=info['password'],
-        broker=info['broker'], port=info['port'], topic=info['topic']
+        broker=info['broker'], port=info['port']
     )
     return Config(
         frame_rate_timeout=conf['frame_rate_timeout'], rtsp_url=conf['rtsp_url'],

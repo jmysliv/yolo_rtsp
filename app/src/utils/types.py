@@ -14,7 +14,6 @@ class MqttInfo:
     password: str
     broker: str
     port: int
-    topic: str
 
 
 @dataclass

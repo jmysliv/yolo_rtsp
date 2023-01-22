@@ -8,4 +8,3 @@ mqtt_info:
   password: admin
   broker: localhost
   port: 1883
-  topic: yolo

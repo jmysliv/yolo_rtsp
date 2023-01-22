@@ -45,7 +45,7 @@ class FramesManager:
             'timestamp': frame_info.timestamp,
             'detected_objects': generate_detected_objects_info(result)
         }
-        self.mqtt_manager.publish_message(msg)
+        self.mqtt_manager.publish_message(msg, "yolo")
 
     def stop(self):
         if self._yolo_thread:

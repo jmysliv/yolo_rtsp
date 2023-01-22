@@ -30,6 +30,6 @@ class MetricCollector:
                 "frames": self.frames_per_second
             }
 
-            self.mqtt_manager.publish_message(stats)
+            self.mqtt_manager.publish_message(stats, "metric")
 
             time.sleep(5)
