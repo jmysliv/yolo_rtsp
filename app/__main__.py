@@ -12,5 +12,5 @@ if __name__ == "__main__":
     mqtt_manager = MqttManager(config.mqtt_info)
     frames_manager = FramesManager(config.frame_strategy, mqtt_manager)
     rtsp_reader = RtspReader(config.frame_rate_timeout, config.rtsp_url, frames_manager)
-    metric_collector = MetricCollector(rtsp_reader, mqtt_manager)
+    metric_collector = MetricCollector(rtsp_reader, mqtt_manager, frames_manager)
     metric_collector.start_collecting_metrics()

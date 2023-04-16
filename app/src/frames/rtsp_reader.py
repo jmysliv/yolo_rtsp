@@ -36,8 +36,8 @@ class RtspReader:
 
             if ret:
                 self.number_of_frames += 1
-                t = datetime.now()
-                cv2.imwrite(f'./outputs/frame_${t}.jpg', frame)
+                # t = datetime.now()
+                # cv2.imwrite(f'./outputs/frame_${t}.jpg', frame)
                 # cv2.imshow('frame', frame)
                 # time.sleep(self._frame_rate_timeout)
             else:

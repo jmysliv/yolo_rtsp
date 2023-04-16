@@ -29,6 +29,7 @@ class FramesManager:
         self.mqtt_manager = mqtt_manager
         self._yolo_thread = threading.Thread(target=self._yolo.run_analyzing, args=())
         self._yolo_thread.start()
+        self.objects_detected = 0
 
     def handle_frame(self, frame):
         time = datetime.now()
@@ -41,11 +42,14 @@ class FramesManager:
 
 
     def result_callback(self, frame_info: FrameInfo, result):
+        detected_objects = generate_detected_objects_info(result)
+        self.objects_detected += len(detected_objects)
+        print(self.objects_detected)
         msg = {
             'timestamp': frame_info.timestamp,
-            'detected_objects': generate_detected_objects_info(result)
+            'detected_objects': detected_objects
         }
-        self.mqtt_manager.publish_message(msg, "yolo")
+        # self.mqtt_manager.publish_message(msg, "yolo")
 
     def stop(self):
         if self._yolo_thread:
