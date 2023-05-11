@@ -1,5 +1,5 @@
 .idea
-app/res/files
+app/res/files/yolov3.weights
 **/__pycache__
 mosquitto/log/mosquitto.log
 outputs/*.jpg
