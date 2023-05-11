@@ -12,4 +12,5 @@ if __name__ == "__main__":
         broker=info['broker'], port=info['port'], topic=info['topic']
     )
     manager = MqttManager(mqtt_info)
-    app.run()
+    app.config['MQTT'] = manager
+    app.run(host='0.0.0.0')

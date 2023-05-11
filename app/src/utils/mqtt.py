@@ -49,11 +49,11 @@ class MqttManager:
         if self._mqtt_client:
             result = self._mqtt_client.publish(topic, msg)
             status = result[0]
-            if status == 0:
-                logger.info(f"Send message to MQTT topic")
-            else:
-                logger.warning(f"Failed to send message to MQTT topic")
-                logger.info(msg)
+            # if status == 0:
+            #     logger.info(f"Send message to MQTT topic")
+            # else:
+            #     logger.warning(f"Failed to send message to MQTT topic")
+            #     logger.info(msg)
         else:
             logger.info(msg)
 

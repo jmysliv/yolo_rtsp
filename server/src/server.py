@@ -1,13 +1,10 @@
-from flask import Flask
-from .postgres_connector import conn
+from flask import Flask, render_template
 
-app = Flask(__name__)
+app = Flask(__name__, template_folder='../templates')
 
 
 @app.route("/")
 def hello_world():
-    cur = conn.cursor()
-    cur.execute("SELECT * FROM detected_objects")
-    result = cur.fetchall()
-    cur.close()
-    return f'<p>Detected objects: {result}</p>'
+    manager = app.config['MQTT']
+    objects = manager.objects
+    return render_template('template.html', data=objects)

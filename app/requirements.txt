@@ -1,4 +1,6 @@
-numpy
+numpy==1.21.5
 opencv-python-headless
 paho-mqtt
 requests
+pyyaml
+psutil

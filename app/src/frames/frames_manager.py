@@ -5,6 +5,7 @@ from .frame import FrameInfo
 from .yolo import Yolo
 from ..utils.logger import logger
 from ..utils.mqtt import MqttManager
+import cv2
 
 def generate_detected_objects_info(result):
     info = []
@@ -44,12 +45,15 @@ class FramesManager:
     def result_callback(self, frame_info: FrameInfo, result):
         detected_objects = generate_detected_objects_info(result)
         self.objects_detected += len(detected_objects)
-        print(self.objects_detected)
+        logger.info(f'Detected object: {len(detected_objects)}')
         msg = {
             'timestamp': frame_info.timestamp,
             'detected_objects': detected_objects
         }
-        # self.mqtt_manager.publish_message(msg, "yolo")
+        self.mqtt_manager.publish_message(msg, "yolo")
+        # debug
+        # if len(detected_objects) > 0:
+        #     cv2.imwrite(f'./app/outputs/frame_${frame_info.timestamp}.jpg', frame_info.frame)
 
     def stop(self):
         if self._yolo_thread:

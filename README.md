@@ -31,20 +31,10 @@ docker buildx create --name profile
 docker buildx use profile
 docker buildx inspect --bootstrap
 ```
-Build the balancer:
-```shell
-sudo docker buildx build --platform linux/arm64 -t tequilac/balancer -f docker/balancer/Dockerfile --push .
-```
 Build the app:
 ```shell
 sudo docker buildx build --platform linux/arm64 -t tequilac/app -f docker/app/Dockerfile --push .
 ```
-
-### On Kubernetes cluster
-
-Use the files provided in the `deployment` directory.
-Note that the images specified for the deployments were built for arm64 architecture.
-
 
 ### YOLO network
 

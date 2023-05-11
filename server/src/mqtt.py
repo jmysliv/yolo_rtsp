@@ -1,7 +1,6 @@
 import json
 from paho.mqtt import client as mqtt_client
 from dataclasses import dataclass
-from .postgres_connector import conn
 import threading
 
 @dataclass
@@ -15,22 +14,14 @@ class MqttInfo:
 
 
 class MqttManager:
+    objects = []
     def __init__(self, mqtt_info: MqttInfo):
-        print(mqtt_info)
         self._mqtt_info = mqtt_info
         self._mqtt_client = self.connect_mqtt() if mqtt_info else None
-        print(self._mqtt_client)
         def on_message(client, userdata, msg):
-            print("new message")
             data = json.loads(msg.payload)
-
-            print(msg.topic+" "+str(data))
             if len(data['detected_objects']) > 0:
-                cur = conn.cursor()
-                cur.execute("INSERT INTO detected_objects (object, timestamp) VALUES (%s, %s)", (data["detected_objects"][0]["class"], data['timestamp']))
-                conn.commit()
-                cur.close()
-
+                self.objects.append(data)
 
         self._mqtt_client.subscribe(self._mqtt_info.topic)
         self._mqtt_client.on_message = on_message

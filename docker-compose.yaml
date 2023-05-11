@@ -9,34 +9,21 @@ services:
     volumes:
       - ./mosquitto/config:/mosquitto/config/:rw
       - ./mosquitto/log/:/mosquitto/log/
-  postgres:
-    container_name: postgres_container
-    image: postgres
-    environment:
-      POSTGRES_USER: iot
-      POSTGRES_PASSWORD: iot
-    #   PGDATA: /data/postgres
-    # volumes:
-    #    - postgres:/data/postgres
+  app:
+    build: ./app
+    depends_on:
+      mosquitto:
+        condition: service_started
+    network_mode: "host"
+    volumes:
+        - ./app:/app
+  server:
+    build: ./server
+    depends_on:
+      mosquitto:
+        condition: service_started
+    volumes:
+        - ./server:/server
     ports:
-      - "5432:5432"
-    networks:
-      - postgres
-    restart: unless-stopped
-  pgadmin:
-    container_name: pgadmin_container
-    image: dpage/pgadmin4
-    environment:
-      PGADMIN_DEFAULT_EMAIL: ${PGADMIN_DEFAULT_EMAIL:-pgadmin4@pgadmin.org}
-      PGADMIN_DEFAULT_PASSWORD: ${PGADMIN_DEFAULT_PASSWORD:-admin}
-      PGADMIN_CONFIG_SERVER_MODE: 'False'
-    ports:
-      - "${PGADMIN_PORT:-5050}:80"
-    networks:
-      - postgres
-    restart: unless-stopped
-networks:
-  postgres:
-    driver: bridge
-
+      - 8000:5000
 

@@ -3,6 +3,6 @@ mqtt_info:
   client_id: id-1002
   username: admin
   password: admin
-  broker: localhost
+  broker: mosquitto
   port: 1883
   topic: yolo
