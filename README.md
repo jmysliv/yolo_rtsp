@@ -7,34 +7,18 @@ and sending the result data on an MQTT topic.
 
 The project consists of:
 * **app** - the application that analyzes the stream and detects objects using yolo library.
+* **mosquitto** - an open source (EPL/EDL licensed) message broker that implements the MQTT protocol
+* **server** - a simple flask server that displays detected objects
   
-For the system to work there needs to be exactly one instance of balancer and at least one instance of the app running.
 ## Running the project
 
 ### Locally
 
 ```shell
 docker-compose up
-python -m app
-python -m server
 ```
 
-### In Docker container
-
-Use the files provided in the `docker` directory to build the container images.
-
-For building on the arm64 architecture first use:
-```shell
-sudo apt install -y qemu-user-static binfmt-support
-docker run --rm --privileged multiarch/qemu-user-static --reset -p yes
-docker buildx create --name profile
-docker buildx use profile
-docker buildx inspect --bootstrap
-```
-Build the app:
-```shell
-sudo docker buildx build --platform linux/arm64 -t tequilac/app -f docker/app/Dockerfile --push .
-```
+The flask page should be visible at port 8000.
 
 ### YOLO network
 
