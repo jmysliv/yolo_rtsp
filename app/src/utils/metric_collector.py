@@ -31,7 +31,7 @@ class MetricCollector:
                 "timestamp": datetime.now(),
                 "sensor_id": 2,
             }
-            self.mqtt_manager.publish_message(self.ram_usage, "S_2")
+            self.mqtt_manager.publish_message(data, "S_2")
             current_time = datetime.now()
             frames_diff = self.rtsp_reader.number_of_frames - self.number_of_frames
             times_diff = (current_time - self.timestamp).total_seconds()
